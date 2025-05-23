@@ -1,4 +1,6 @@
+# robots.txt for https://holisticai.com
 User-agent: *
 Allow: /
 
-Sitemap: https://example.com/sitemap.xml 
+# Sitemaps
+Sitemap: https://holisticai.com/sitemap.xml

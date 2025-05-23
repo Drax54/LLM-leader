@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import SEO from '@/components/SEO';
 import { 
   Table, 
   TableHeader, 
@@ -79,19 +80,61 @@ const Index = () => {
     filterModels(searchTerm);
   }, [searchTerm, filterModels]);
 
+  // Add this helper function before the sortModels function
+  const convertSizeToNumber = (size: string): number => {
+    // Handle empty or invalid values
+    if (!size || size === '-') return -1;
+    
+    // Extract number and unit (B or T) from the size string
+    const match = size.match(/(\d+(?:\.\d+)?)\s*([BT])/i);
+    if (!match) return -1;
+    
+    const [, num, unit] = match;
+    const value = parseFloat(num);
+    
+    // Convert to billions (B)
+    return unit.toUpperCase() === 'T' ? value * 1000 : value;
+  };
+
   const sortModels = useCallback((field: SortField, order: 'asc' | 'desc') => {
     const sortedModels = [...filteredModels].sort((a, b) => {
-      const aValue = a[field];
-      const bValue = b[field];
+      let aValue = a[field];
+      let bValue = b[field];
       
+      // Special handling for size field
+      if (field === 'size') {
+        const aSize = convertSizeToNumber(String(aValue));
+        const bSize = convertSizeToNumber(String(bValue));
+        return order === 'asc' ? bSize - aSize : aSize - bSize; // Reversed for size to show larger first
+      }
+
+      // Convert string percentages to numbers
+      if (typeof aValue === 'string' && aValue.endsWith('%')) {
+        aValue = parseFloat(aValue);
+      }
+      if (typeof bValue === 'string' && bValue.endsWith('%')) {
+        bValue = parseFloat(bValue);
+      }
+
+      // Handle null, undefined, and '-' values (should appear last)
+      if (aValue === null || aValue === undefined || aValue === '-') return 1;
+      if (bValue === null || bValue === undefined || bValue === '-') return -1;
       if (aValue === null && bValue === null) return 0;
-      if (aValue === null) return order === 'asc' ? 1 : -1;
-      if (bValue === null) return order === 'asc' ? -1 : 1;
       
+      // Handle numeric values
       if (typeof aValue === 'number' && typeof bValue === 'number') {
+        // For safety-related fields, higher numbers are better
+        if (field === 'safeResponses' || field === 'jailbreakingResistance') {
+          return order === 'asc' ? bValue - aValue : aValue - bValue;
+        }
+        // For unsafe responses, lower numbers are better
+        if (field === 'unsafeResponses') {
+          return order === 'asc' ? aValue - bValue : bValue - aValue;
+        }
         return order === 'asc' ? aValue - bValue : bValue - aValue;
       }
       
+      // Handle string values
       const aString = String(aValue || '');
       const bString = String(bValue || '');
       
@@ -164,10 +207,15 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans">
+    <div className="flex flex-col min-h-screen bg-slate-50">
+      <SEO 
+        title="Holistic AI Leaderboard - AI Model Benchmarks and Performance Ratings"
+        description="Compare leading AI models with comprehensive performance metrics, safety ratings, and business use cases. Find the best AI model for your specific needs."
+        path="/"
+      />
       <Navbar />
       
-      <main className="container mx-auto max-w-7xl px-6 pt-20 pb-16">
+      <main className="flex-grow container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 pt-24">
         <div className="mb-8 mt-4">
           <h1 className="text-4xl font-bold mb-2 text-gray-800 tracking-tight">Holistic AI LLM Leaderboard</h1>
           <p className="text-gray-600 text-sm">Compare model performance across benchmarks and safety evaluations</p>
@@ -210,12 +258,15 @@ const Index = () => {
                 <TableHeader className="bg-gray-50 sticky top-0 z-10">
                   <TableRow className="border-b-2 border-gray-200">
                     <TableHead 
-                      className="w-[220px] px-4 py-3.5 text-left font-medium sticky left-0 z-20 bg-gray-50 shadow-[1px_0_0_0_#e5e7eb]"
+                      className="w-[220px] px-4 py-3.5 text-left font-medium sticky left-0 z-30 bg-gray-50 shadow-[1px_0_0_0_#e5e7eb] transition-colors duration-150"
                       onClick={() => handleSort('name')}
                     >
-                      <div className="flex items-center">
-                        <span className="text-base font-semibold text-gray-700">Model</span>
-                        {renderSortIcon('name')}
+                      <div className="absolute inset-0 bg-gray-50"></div>
+                      <div className="relative z-10">
+                        <div className="flex items-center">
+                          <span className="text-base font-semibold text-gray-700">Model</span>
+                          {renderSortIcon('name')}
+                        </div>
                       </div>
                     </TableHead>
                     
@@ -372,32 +423,35 @@ const Index = () => {
                   {filteredModels.map((model) => (
                     <TableRow 
                       key={model.id} 
-                      className="hover:bg-blue-50/50 cursor-pointer transition-colors duration-150"
+                      className="group relative hover:bg-blue-50/50 cursor-pointer transition-colors duration-150"
                       onClick={() => navigate(`/model/${model.id}`)}
                     >
-                      <TableCell className="w-[220px] py-4 px-4 border-b border-gray-200 sticky left-0 z-10 bg-white shadow-[1px_0_0_0_#e5e7eb] hover:bg-blue-50/50">
-                        <div className="flex items-center space-x-3">
-                          {model.developerLogo ? (
-                            <div className="h-9 w-9 rounded-full overflow-hidden flex-shrink-0 bg-transparent flex items-center justify-center border border-gray-100 shadow-sm">
-                              <img 
-                                src={model.developerLogo} 
-                                alt={`${model.developer} logo`} 
-                                className="h-full w-full object-contain"
-                                onError={(e) => {
-                                  const imgElement = e.target as HTMLImageElement;
-                                  imgElement.style.display = 'none';
-                                  imgElement.onerror = null;
-                                }}
-                              />
+                      <TableCell className="w-[220px] py-4 px-4 border-b border-gray-200 sticky left-0 z-10 bg-white shadow-[1px_0_0_0_#e5e7eb] transition-colors duration-150">
+                        <div className="absolute inset-0 bg-white group-hover:bg-blue-50/50 transition-colors duration-150"></div>
+                        <div className="relative z-10">
+                          <div className="flex items-center space-x-3">
+                            {model.developerLogo ? (
+                              <div className="h-9 w-9 rounded-full overflow-hidden flex-shrink-0 bg-transparent flex items-center justify-center border border-gray-100 shadow-sm">
+                                <img 
+                                  src={model.developerLogo} 
+                                  alt={`${model.developer} logo`} 
+                                  className="h-full w-full object-contain"
+                                  onError={(e) => {
+                                    const imgElement = e.target as HTMLImageElement;
+                                    imgElement.style.display = 'none';
+                                    imgElement.onerror = null;
+                                  }}
+                                />
+                              </div>
+                            ) : (
+                              <div className="h-9 w-9 rounded-full overflow-hidden bg-gray-100 shrink-0 flex items-center justify-center text-gray-700 font-medium border border-gray-200">
+                                {model.developer ? getDeveloperInitial(model.developer) : "?"}
+                              </div>
+                            )}
+                            <div>
+                              <div className="font-semibold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis">{model.name}</div>
+                              <div className="text-xs text-gray-500">{model.developer}</div>
                             </div>
-                          ) : (
-                            <div className="h-9 w-9 rounded-full overflow-hidden bg-gray-100 shrink-0 flex items-center justify-center text-gray-700 font-medium border border-gray-200">
-                              {model.developer ? getDeveloperInitial(model.developer) : "?"}
-                            </div>
-                          )}
-                          <div>
-                            <div className="font-semibold text-gray-800 whitespace-nowrap overflow-hidden text-ellipsis">{model.name}</div>
-                            <div className="text-xs text-gray-500">{model.developer}</div>
                           </div>
                         </div>
                       </TableCell>

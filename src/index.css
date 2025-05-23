@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -128,6 +127,23 @@
   .chart-tooltip {
     @apply bg-white/90 backdrop-blur-md border border-border/30 rounded-lg shadow-lg px-3 py-2;
   }
+  
+  /* 3D Flip Card Styles */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .transform-style-3d {
+    transform-style: preserve-3d;
+  }
+  
+  .backface-hidden {
+    backface-visibility: hidden;
+  }
+  
+  .rotate-y-180 {
+    transform: rotateY(180deg);
+  }
 }
 
 /* Animation classes for page transitions */
@@ -172,5 +188,20 @@
 
 .recharts-legend-item-text {
   font-size: 0.875rem;
+}
+
+/* Table of Contents active section styling */
+.active-toc-section {
+  background-color: rgba(239, 246, 255, 0.8);
+  color: rgb(37, 99, 235);
+  font-weight: 500;
+}
+
+.active-toc-section div.absolute {
+  height: 100%;
+}
+
+.active-toc-section svg {
+  color: rgb(37, 99, 235);
 }
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import SEO from '@/components/SEO';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -64,6 +65,12 @@ const TestYourLLM: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
+      <SEO 
+        title="Test Your Enterprise LLM - Holistic AI Safety & Performance Assessment"
+        description="Get your AI language model professionally evaluated for safety, performance, and compliance with industry benchmarks and regulatory requirements."
+        schemaType="Service"
+        path="/test-your-llm"
+      />
       <Navbar />
       
       <main className="flex-grow pt-24 pb-16">

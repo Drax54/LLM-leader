@@ -61,7 +61,10 @@ const Footer: React.FC = () => {
           </div>
         </div>
         
-        <div className="border-t border-gray-200 mt-12 pt-8">
+        <div className="border-t border-gray-200 mt-12 pt-8 space-y-4">
+          <p className="text-gray-600 text-sm text-center max-w-2xl mx-auto">
+            <strong>IMPORTANT:</strong> All safety assessments and jailbreaking test results are copyrighted materials owned by <a href="https://www.holisticai.com" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Holistic AI</a>. Reproduction, distribution, or use of these data requires explicit attribution and a link to the original source. Unauthorized use is strictly prohibited.
+          </p>
           <p className="text-gray-500 text-sm text-center">
             © {new Date().getFullYear()} Holistic AI. All rights reserved.
           </p>
