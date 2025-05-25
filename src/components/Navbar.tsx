@@ -8,18 +8,24 @@ const Navbar = () => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-sm">
       <div className="container max-w-7xl mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center">
+          <div 
+            className="flex items-center cursor-pointer" 
+            onClick={() => window.location.href = '/'}
+          >
             <img 
               src="/holisticai.png" 
               alt="Holistic AI Logo" 
               className="h-10 max-w-[180px] object-contain" 
             />
-          </Link>
+          </div>
           
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center space-x-8">
             <Link to="/" className="text-gray-700 text-base font-medium hover:text-blue-600 transition-colors">
               Models
+            </Link>
+            <Link to="/recommendations" className="text-gray-700 text-base font-medium hover:text-blue-600 transition-colors">
+              Recommendations
             </Link>
             <Link to="/red-teaming" className="text-gray-700 text-base font-medium hover:text-blue-600 transition-colors">
               Red Teaming
@@ -57,6 +63,13 @@ const Navbar = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Models
+              </Link>
+              <Link 
+                to="/recommendations" 
+                className="text-gray-700 text-base font-medium hover:text-blue-600 transition-colors"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Recommendations
               </Link>
               <Link 
                 to="/red-teaming" 

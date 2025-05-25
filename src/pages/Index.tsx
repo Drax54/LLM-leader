@@ -21,7 +21,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import modelData from '@/data/models.json';
 
-type SortField = 'name' | 'developer' | 'inputCost' | 'outputCost' | 'cutoffKnowledge' | 'contextLength' | 'license' | 'safeResponses' | 'unsafeResponses' | 'jailbreakingResistance' | 'operationalRank' | 'safetyRank' | 'size' | 'released' | 'codeLMArena' | 'mathLiveBench' | 'codeLiveBench';
+type SortField = 'name' | 'developer' | 'inputCost' | 'outputCost' | 'cutoffKnowledge' | 'contextLength' | 'license' | 'safeResponses' | 'unsafeResponses' | 'jailbreakingResistance' | 'operationalRank' | 'safetyRank' | 'size' | 'released' | 'codeLMArena' | 'mmlu' | 'mathLiveBench' | 'codeLiveBench' | 'outputSpeed' | 'latency';
 
 interface ModelData {
   id: string;
@@ -33,6 +33,7 @@ interface ModelData {
   size: string;
   released: string;
   codeLMArena: number | string;
+  mmlu: string;
   mathLiveBench: string;
   codeLiveBench: string;
   inputCost: number | null;
@@ -43,6 +44,8 @@ interface ModelData {
   safeResponses: number | null;
   unsafeResponses: number | null;
   jailbreakingResistance: number | null;
+  outputSpeed: number | null;
+  latency: number | null;
 }
 
 const Index = () => {
@@ -311,6 +314,16 @@ const Index = () => {
 
                     <TableHead 
                       className="px-3 py-3.5 text-center font-medium text-gray-700 whitespace-nowrap cursor-pointer w-[120px] border-l border-gray-100"
+                      onClick={() => handleSort('contextLength')}
+                    >
+                      <div className="flex flex-col items-center">
+                        <span className="text-base font-semibold text-gray-700">Context</span>
+                        <span className="text-xs text-gray-500">Length</span>
+                      </div>
+                    </TableHead>
+
+                    <TableHead 
+                      className="px-3 py-3.5 text-center font-medium text-gray-700 whitespace-nowrap cursor-pointer w-[120px] border-l border-gray-100"
                       onClick={() => handleSort('released')}
                     >
                       <div className="flex items-center justify-center">
@@ -325,6 +338,16 @@ const Index = () => {
                       <div className="flex flex-col items-center">
                         <span className="text-base font-semibold text-gray-700">Code</span>
                         <span className="text-xs text-gray-500">LMArena</span>
+                      </div>
+                    </TableHead>
+                    
+                    <TableHead 
+                      className="px-3 py-3.5 text-center font-medium text-gray-700 whitespace-nowrap cursor-pointer w-[120px] border-l border-gray-100"
+                      onClick={() => handleSort('mmlu')}
+                    >
+                      <div className="flex flex-col items-center">
+                        <span className="text-base font-semibold text-gray-700">MMLU</span>
+                        <span className="text-xs text-gray-500">Score</span>
                       </div>
                     </TableHead>
                     
@@ -347,6 +370,26 @@ const Index = () => {
                         <span className="text-xs text-gray-500">LiveBench</span>
                       </div>
                     </TableHead>
+
+                    <TableHead 
+                      className="px-3 py-3.5 text-center font-medium text-gray-700 whitespace-nowrap cursor-pointer w-[120px] border-l border-gray-100"
+                      onClick={() => handleSort('outputSpeed')}
+                    >
+                      <div className="flex flex-col items-center">
+                        <span className="text-base font-semibold text-gray-700">Output Speed</span>
+                        <span className="text-xs text-gray-500">tokens/s</span>
+                      </div>
+                    </TableHead>
+
+                    <TableHead 
+                      className="px-3 py-3.5 text-center font-medium text-gray-700 whitespace-nowrap cursor-pointer w-[120px] border-l border-gray-100"
+                      onClick={() => handleSort('latency')}
+                    >
+                      <div className="flex flex-col items-center">
+                        <span className="text-base font-semibold text-gray-700">Latency</span>
+                        <span className="text-xs text-gray-500">TTFT (s)</span>
+                      </div>
+                    </TableHead>
                     
                     <TableHead 
                       className="px-3 py-3.5 text-center font-medium text-gray-700 whitespace-nowrap cursor-pointer w-[120px] border-l border-gray-100"
@@ -354,7 +397,7 @@ const Index = () => {
                     >
                       <div className="flex flex-col items-center">
                         <span className="text-base font-semibold text-gray-700">Input</span>
-                        <span className="text-xs text-gray-500">Cost /M</span>
+                        <span className="text-xs text-gray-500">Cost $/M</span>
                       </div>
                     </TableHead>
                     
@@ -364,7 +407,7 @@ const Index = () => {
                     >
                       <div className="flex flex-col items-center">
                         <span className="text-base font-semibold text-gray-700">Output</span>
-                        <span className="text-xs text-gray-500">Cost /M</span>
+                        <span className="text-xs text-gray-500">Cost $/M</span>
                       </div>
                     </TableHead>
                     
@@ -375,16 +418,6 @@ const Index = () => {
                       <div className="flex flex-col items-center">
                         <span className="text-base font-semibold text-gray-700">Cutoff</span>
                         <span className="text-xs text-gray-500">Knowledge</span>
-                      </div>
-                    </TableHead>
-                    
-                    <TableHead 
-                      className="px-3 py-3.5 text-center font-medium text-gray-700 whitespace-nowrap cursor-pointer w-[120px] border-l border-gray-100"
-                      onClick={() => handleSort('contextLength')}
-                    >
-                      <div className="flex flex-col items-center">
-                        <span className="text-base font-semibold text-gray-700">Context</span>
-                        <span className="text-xs text-gray-500">Length</span>
                       </div>
                     </TableHead>
                     
@@ -474,7 +507,7 @@ const Index = () => {
                         )}
                       </TableCell>
                       <TableCell className="text-center py-4 px-3 border-b border-gray-200 whitespace-nowrap border-l border-gray-100 font-normal text-gray-700">{model.developer}</TableCell>
-                      <TableCell className="text-center py-4 px-3 border-b border-gray-200 whitespace-nowrap border-l border-gray-100 font-normal text-gray-700">
+                      <TableCell className="text-center py-4 px-3 border-b border-gray-200 whitespace-nowrap border-l border-gray-100">
                         {model.size.includes("Parameters") ? (
                           <div className="flex flex-col items-center font-mono">
                             <span>{model.size.split(" ")[0]}</span>
@@ -483,11 +516,36 @@ const Index = () => {
                           <span className="font-mono">{model.size}</span>
                         )}
                       </TableCell>
+                      <TableCell className="text-center py-4 px-3 border-b border-gray-200 whitespace-nowrap border-l border-gray-100">
+                        {model.contextLength !== '-' ? (
+                          <span className="font-mono text-gray-700">
+                            {model.contextLength.includes("tokens") ? 
+                              model.contextLength.includes("1M tokens") ? 
+                                model.contextLength :
+                                model.contextLength
+                                  .replace("200,000 tokens", "200k tokens")
+                                  .replace("128,000 tokens", "128k tokens")
+                                  .replace(/(\d+),(\d+) tokens/g, (match, p1, p2) => {
+                                    const num = parseInt(p1 + p2, 10);
+                                    return `${num/1000}k tokens`;
+                                  })
+                              : model.contextLength
+                            }
+                          </span>
+                        ) : "—"}
+                      </TableCell>
                       <TableCell className="text-center py-4 px-3 border-b border-gray-200 whitespace-nowrap border-l border-gray-100 font-mono font-normal text-gray-700">{model.released}</TableCell>
                       <TableCell className="text-center py-4 px-3 border-b border-gray-200 whitespace-nowrap border-l border-gray-100 font-normal">
                         {model.codeLMArena !== '-' ? (
                           <span className="font-mono text-gray-700">
                             {model.codeLMArena}
+                          </span>
+                        ) : "—"}
+                      </TableCell>
+                      <TableCell className="text-center py-4 px-3 border-b border-gray-200 whitespace-nowrap border-l border-gray-100">
+                        {model.mmlu !== '-' ? (
+                          <span className={`px-2 py-1 rounded-md text-sm font-mono ${getScoreClassName(model.mmlu, 'benchmark')}`}>
+                            {model.mmlu}
                           </span>
                         ) : "—"}
                       </TableCell>
@@ -502,6 +560,20 @@ const Index = () => {
                         {model.codeLiveBench !== '-' ? (
                           <span className={`px-2 py-1 rounded-md text-sm font-mono ${getScoreClassName(model.codeLiveBench, 'benchmark')}`}>
                             {model.codeLiveBench}
+                          </span>
+                        ) : "—"}
+                      </TableCell>
+                      <TableCell className="text-center py-4 px-3 border-b border-gray-200 whitespace-nowrap border-l border-gray-100">
+                        {model.outputSpeed !== null ? (
+                          <span className="font-mono text-gray-700">
+                            {model.outputSpeed}
+                          </span>
+                        ) : "—"}
+                      </TableCell>
+                      <TableCell className="text-center py-4 px-3 border-b border-gray-200 whitespace-nowrap border-l border-gray-100">
+                        {model.latency !== null ? (
+                          <span className="font-mono text-gray-700">
+                            {model.latency}
                           </span>
                         ) : "—"}
                       </TableCell>
@@ -523,24 +595,6 @@ const Index = () => {
                         {model.cutoffKnowledge !== '-' ? (
                           <span className="font-mono text-gray-700">
                             {model.cutoffKnowledge}
-                          </span>
-                        ) : "—"}
-                      </TableCell>
-                      <TableCell className="text-center py-4 px-3 border-b border-gray-200 whitespace-nowrap border-l border-gray-100">
-                        {model.contextLength !== '-' ? (
-                          <span className="font-mono text-gray-700">
-                            {model.contextLength.includes("tokens") ? 
-                              model.contextLength.includes("1M tokens") ? 
-                                model.contextLength :
-                                model.contextLength
-                                  .replace("200,000 tokens", "200k tokens")
-                                  .replace("128,000 tokens", "128k tokens")
-                                  .replace(/(\d+),(\d+) tokens/g, (match, p1, p2) => {
-                                    const num = parseInt(p1 + p2, 10);
-                                    return `${num/1000}k tokens`;
-                                  })
-                              : model.contextLength
-                            }
                           </span>
                         ) : "—"}
                       </TableCell>

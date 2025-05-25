@@ -10,6 +10,7 @@ import ScrollToTop from "./components/ScrollToTop";
 import ModelDetail from '@/pages/ModelDetail';
 import TestYourLLM from '@/pages/TestYourLLM';
 import RedTeaming from '@/pages/RedTeaming';
+import Recommendations from '@/pages/Recommendations';
 import CookieConsent from "./components/CookieConsent";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/models" element={<Navigate replace to="/" />} />
             <Route path="/model/:id" element={<ModelDetail />} />
+            <Route path="/recommendations" element={<Recommendations />} />
             <Route path="/test-your-llm" element={<TestYourLLM />} />
             <Route path="/red-teaming" element={<RedTeaming />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

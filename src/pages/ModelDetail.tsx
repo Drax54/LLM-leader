@@ -47,6 +47,7 @@ interface ModelData {
   size: string;
   released: string;
   codeLMArena: number | string;
+  mmlu: string;
   mathLiveBench: string;
   codeLiveBench: string;
   inputCost: number | null;
@@ -58,6 +59,8 @@ interface ModelData {
   unsafeResponses: number | null;
   jailbreakingResistance: number | null;
   officialUrl?: string; // Optional field for official model URL
+  outputSpeed?: number | null; // New field for output speed in tokens/s
+  latency?: number | null; // New field for latency (TTFT) in seconds
 }
 
 const ModelDetail: React.FC = () => {
@@ -67,6 +70,14 @@ const ModelDetail: React.FC = () => {
   // State for cost calculator
   const [inputTokens, setInputTokens] = useState<number>(1);
   const [outputTokens, setOutputTokens] = useState<number>(1);
+  
+  // Add smooth scroll setup - moved before early return
+  useEffect(() => {
+    document.documentElement.style.scrollBehavior = 'smooth';
+    return () => {
+      document.documentElement.style.scrollBehavior = 'auto';
+    };
+  }, []);
   
   const model = modelData.find(m => m.id === id) as ModelData | undefined;
   
@@ -257,14 +268,6 @@ const ModelDetail: React.FC = () => {
   };
 
   const costResult = calculateCost();
-
-  // Add smooth scroll setup
-  useEffect(() => {
-    document.documentElement.style.scrollBehavior = 'smooth';
-    return () => {
-      document.documentElement.style.scrollBehavior = 'auto';
-    };
-  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
@@ -477,6 +480,34 @@ const ModelDetail: React.FC = () => {
                 <p className="text-xl font-semibold text-gray-900">{formatValue(model.cutoffKnowledge)}</p>
               </CardContent>
             </Card>
+
+            {(model.outputSpeed !== null || model.latency !== null) && (
+              <Card className="border-none shadow-sm hover:shadow-md transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-sm font-medium text-gray-500">Output Speed</p>
+                    <Cpu className="h-4 w-4 text-gray-400" />
+                  </div>
+                  <p className="text-xl font-semibold text-gray-900">
+                    {model.outputSpeed !== null ? `${model.outputSpeed} tokens/s` : 'Not Available'}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+
+            {(model.outputSpeed !== null || model.latency !== null) && (
+              <Card className="border-none shadow-sm hover:shadow-md transition-shadow">
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <p className="text-sm font-medium text-gray-500">Latency (TTFT)</p>
+                    <Clock className="h-4 w-4 text-gray-400" />
+                  </div>
+                  <p className="text-xl font-semibold text-gray-900">
+                    {model.latency !== null ? `${model.latency}s` : 'Not Available'}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
           </div>
           
           {/* Benchmark Performance */}
@@ -511,6 +542,41 @@ const ModelDetail: React.FC = () => {
                           {Number(model.codeLMArena) > 1300 ? "Excellent reasoning capabilities" : 
                            Number(model.codeLMArena) > 1100 ? "Good reasoning capabilities" :
                            "Average reasoning capabilities"}
+                        </p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )}
+
+                {model.mmlu && model.mmlu !== '-' && (
+                  <Card className="border-none shadow-sm">
+                    <CardContent className="p-6">
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center">
+                          <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mr-3">
+                            <Hash className="h-5 w-5 text-purple-600" />
+                          </div>
+                          <div>
+                            <h3 className="font-medium text-gray-900">MMLU</h3>
+                            <p className="text-sm text-gray-500">Massive Multitask Language Understanding</p>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="mt-4">
+                        <div className="text-3xl font-bold text-gray-900 mb-1">
+                          {model.mmlu}
+                        </div>
+                        <div className="w-full bg-purple-100 rounded-full h-1.5 mt-3">
+                          <div 
+                            className="bg-purple-600 h-1.5 rounded-full" 
+                            style={{ width: `${Math.min(100, (parseFloat(model.mmlu as string) / 100) * 100)}%` }}
+                          ></div>
+                        </div>
+                        <p className="text-xs text-gray-500 mt-2">
+                          {parseFloat(model.mmlu as string) > 90 ? "Exceptional multitask understanding" :
+                           parseFloat(model.mmlu as string) > 80 ? "Strong multitask understanding" :
+                           parseFloat(model.mmlu as string) > 70 ? "Good multitask understanding" :
+                           "Moderate multitask understanding"}
                         </p>
                       </div>
                     </CardContent>
