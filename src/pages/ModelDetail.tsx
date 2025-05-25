@@ -85,7 +85,7 @@ const ModelDetail: React.FC = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-white">
         <SEO 
-          title="Model Not Found - Holistic AI Leaderboard"
+          title="Model Not Found - LLM Leaderboard"
           description="The requested AI model could not be found in our database."
         />
         <div className="text-center">
@@ -272,7 +272,7 @@ const ModelDetail: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
       <SEO 
-        title={`${model.name} by ${model.developer} - Holistic AI Model Analysis`}
+        title={`${model.name} by ${model.developer} - LLM Model Analysis & Benchmarks`}
         description={`Comprehensive performance analysis of ${model.name} including benchmarks, safety metrics, and business use cases. ${model.operationalRank ? `Operational Rank: #${model.operationalRank}.` : ''} ${model.size ? `Model size: ${model.size}.` : ''}`}
         ogType="article"
         schemaType="Product"
@@ -671,7 +671,7 @@ const ModelDetail: React.FC = () => {
                 />
                 <div className="mt-4 px-4">
                   <p className="text-sm text-gray-600 italic">
-                    These Red Teaming audits were conducted by Holistic AI, an independent AI safety and ethics evaluation firm, using standardized testing protocols and adversarial prompts to assess model safety and robustness.
+                    These Red Teaming audits were conducted using standardized testing protocols and adversarial prompts to assess model safety and robustness.
                   </p>
                 </div>
               </div>

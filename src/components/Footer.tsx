@@ -9,9 +9,9 @@ const Footer: React.FC = () => {
           <div>
             <div className="flex items-center space-x-3 mb-6">
               <div className="w-8 h-8 rounded-md bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg">
-                H
+                L
               </div>
-              <span className="font-medium text-base">Holistic AI Audits</span>
+              <span className="font-medium text-base">LLM Leaderboard</span>
             </div>
             <p className="text-gray-500 text-sm">
               Comprehensive assessment and benchmarking of AI language models for safety and performance.
@@ -66,7 +66,7 @@ const Footer: React.FC = () => {
             <strong>IMPORTANT:</strong> All safety assessments and jailbreaking test results are copyrighted materials owned by <a href="https://www.holisticai.com" className="text-blue-600 hover:underline" target="_blank" rel="noopener noreferrer">Holistic AI</a>. Reproduction, distribution, or use of these data requires explicit attribution and a link to the original source. Unauthorized use is strictly prohibited.
           </p>
           <p className="text-gray-500 text-sm text-center">
-            © {new Date().getFullYear()} Holistic AI. All rights reserved.
+            © {new Date().getFullYear()} LLM Leaderboard. All rights reserved.
           </p>
         </div>
       </div>

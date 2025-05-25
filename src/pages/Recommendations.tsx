@@ -265,7 +265,7 @@ const Recommendations: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-blue-50 font-sans">
       <SEO 
-        title="AI Model Recommendations - Find the Best Model for Your Use Case"
+        title="LLM Model Recommendations - Find the Best AI Model for Your Use Case"
         description="Discover the top-performing AI models for coding, mathematics, reasoning, customer support, content writing, and research. Data-driven recommendations based on comprehensive benchmarks."
         ogType="website"
         path="/recommendations"

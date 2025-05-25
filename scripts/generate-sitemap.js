@@ -14,7 +14,7 @@ function generateSitemap() {
   const modelData = JSON.parse(fs.readFileSync(path.resolve(__dirname, '../src/data/models.json'), 'utf8'));
   
   // Website base URL - replace with actual domain before deployment
-  const baseUrl = 'https://holisticai.com';
+  const baseUrl = 'https://llmleaderboard.ai';
   const currentDate = new Date().toISOString().split('T')[0];
   
   // Start XML content
@@ -29,6 +29,12 @@ function generateSitemap() {
     <lastmod>${currentDate}</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>${baseUrl}/recommendations</loc>
+    <lastmod>${currentDate}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
   </url>
   <url>
     <loc>${baseUrl}/red-teaming</loc>

@@ -212,15 +212,15 @@ const Index = () => {
   return (
     <div className="flex flex-col min-h-screen bg-slate-50">
       <SEO 
-        title="Holistic AI Leaderboard - AI Model Benchmarks and Performance Ratings"
-        description="Compare leading AI models with comprehensive performance metrics, safety ratings, and business use cases. Find the best AI model for your specific needs."
+        title="LLM Leaderboard - AI Model Benchmarks, Rankings & Performance Analysis"
+        description="Compare top AI models with comprehensive performance metrics, safety ratings, and business use cases. Find the best LLM for your specific needs with real-world benchmarks."
         path="/"
       />
       <Navbar />
       
       <main className="flex-grow container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12 pt-24">
         <div className="mb-8 mt-4">
-          <h1 className="text-4xl font-bold mb-2 text-gray-800 tracking-tight">Holistic AI LLM Leaderboard</h1>
+          <h1 className="text-4xl font-bold mb-2 text-gray-800 tracking-tight">LLM Leaderboard</h1>
           <p className="text-gray-600 text-sm">Compare model performance across benchmarks and safety evaluations</p>
         </div>
 

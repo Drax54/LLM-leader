@@ -12,9 +12,9 @@ interface SEOProps {
 }
 
 const SEO: React.FC<SEOProps> = ({
-  title = 'Holistic AI Leaderboard - AI Model Benchmarks and Ratings',
-  description = 'Comprehensive assessment and benchmarking of AI language models for safety, performance, and business use cases. Compare top AI models with detailed analysis.',
-  canonicalUrl = 'https://holisticai.com',
+  title = 'LLM Leaderboard - AI Model Benchmarks, Rankings & Performance Analysis',
+  description = 'Comprehensive AI model leaderboard with performance benchmarks, safety rankings, and detailed analysis. Compare top LLMs including GPT, Claude, Gemini, and more with real-world metrics.',
+  canonicalUrl = 'https://llmleaderboard.ai',
   ogImage = '/og-image.png',
   ogType = 'website',
   schemaType = 'WebPage',
@@ -35,6 +35,9 @@ const SEO: React.FC<SEOProps> = ({
       {/* Primary Meta Tags */}
       <title>{title}</title>
       <meta name="description" content={description} />
+      
+      {/* Google Search Console Verification */}
+      <meta name="google-site-verification" content="7Cjy7js2UtHZWbY0W0VbrxaeuEqtrcWxsgWbJsI1b10" />
       
       {/* Canonical URL */}
       <link rel="canonical" href={url} />
@@ -63,7 +66,7 @@ const SEO: React.FC<SEOProps> = ({
           url: url,
           publisher: {
             '@type': 'Organization',
-            name: 'Holistic AI',
+            name: 'LLM Leaderboard',
             logo: {
               '@type': 'ImageObject',
               url: `${canonicalUrl}/holisticai.png`

@@ -40,7 +40,7 @@ const RedTeaming = () => {
   return (
     <div className="min-h-screen bg-slate-50 font-sans">
       <SEO 
-        title="Red Teaming Results - AI Model Safety Analysis | Holistic AI"
+        title="Red Teaming Results - AI Model Safety Analysis"
         description="Comprehensive analysis of AI language models' safety features, resistance to jailbreaking attempts, and response quality to adversarial prompts."
         schemaType="WebPage"
         path="/red-teaming"

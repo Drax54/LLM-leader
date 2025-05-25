@@ -66,7 +66,7 @@ const TestYourLLM: React.FC = () => {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <SEO 
-        title="Test Your Enterprise LLM - Holistic AI Safety & Performance Assessment"
+        title="Test Your Enterprise LLM - AI Safety & Performance Assessment"
         description="Get your AI language model professionally evaluated for safety, performance, and compliance with industry benchmarks and regulatory requirements."
         schemaType="Service"
         path="/test-your-llm"
@@ -80,7 +80,7 @@ const TestYourLLM: React.FC = () => {
             <div className="space-y-8">
               <div>
                 <h1 className="text-4xl font-bold text-gray-900 mb-4">
-                  Test Your Enterprise LLM with Holistic AI
+                  Test Your Enterprise LLM
                 </h1>
                 <p className="text-xl text-gray-600">
                   Comprehensive assessment and benchmarking of your AI language models for safety, performance, and compliance.
